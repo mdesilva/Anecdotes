@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var viewModel: AnecdotesViewModel
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        NavigationView {
+                List {
+                    ForEach(viewModel.anecdotes) { anecdote in
+                        NavigationLink(anecdote.title, destination: AnecdoteView(anecdote: anecdote))
+                    }
+                }
+                .navigationBarTitle("Anecdotes")
+                .navigationBarItems(trailing: Button(action: { viewModel.createEmptyAnecdote() }, label: {
+                    Text("New")
+                }))
+        }
     }
 }
